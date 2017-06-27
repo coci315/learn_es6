@@ -55,14 +55,11 @@
 
 	__webpack_require__(2);
 
-	var _lesson = __webpack_require__(299);
+	var _lottery = __webpack_require__(299);
 
-	var _lesson2 = _interopRequireDefault(_lesson);
+	var _lottery2 = _interopRequireDefault(_lottery);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	console.log(_lesson2.default.A);
-	// import './class/lesson17'
 
 /***/ }),
 /* 2 */
@@ -8706,6 +8703,30 @@
 
 /***/ }),
 /* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(300);
+
+	var _timer = __webpack_require__(301);
+
+	var _timer2 = _interopRequireDefault(_timer);
+
+	__webpack_require__(302);
+
+	__webpack_require__(303);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 300 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+/***/ }),
+/* 301 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -8718,43 +8739,70 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	// export let A=123;
-	//
-	// export function test(){
-	//   console.log('test');
-	// }
-	//
-	// export class Hello{
-	//   test(){
-	//     console.log('class');
-	//   }
-	// }
-
-	var A = 123;
-	var test = function test() {
-	  console.log('test');
-	};
-
-	var Hello = function () {
-	  function Hello() {
-	    _classCallCheck(this, Hello);
+	var Timer = function () {
+	  function Timer() {
+	    _classCallCheck(this, Timer);
 	  }
 
-	  _createClass(Hello, [{
-	    key: 'test',
-	    value: function test() {
-	      console.log('class');
+	  _createClass(Timer, [{
+	    key: 'countdown',
+
+	    // end 倒计时截止时间
+	    // update 每秒更新时间后的回调函数，可以接收一个参数，为每秒更新后的时间，该值同时也保存在类的last_time上
+	    // handle 倒计时结束时的回调函数
+	    value: function countdown(end, update, handle) {
+	      var now = new Date().getTime();
+	      var self = this;
+	      if (now - end > 0) {
+	        handle.call(self);
+	      } else {
+	        var last_time = end - now;
+	        var px_d = 1000 * 60 * 60 * 24;
+	        var px_h = 1000 * 60 * 60;
+	        var px_m = 1000 * 60;
+	        var px_s = 1000;
+	        var d = Math.floor(last_time / px_d);
+	        var h = Math.floor((last_time - d * px_d) / px_h);
+	        var m = Math.floor((last_time - d * px_d - h * px_h) / px_m);
+	        var s = Math.floor((last_time - d * px_d - h * px_h - m * px_m) / px_s);
+	        var r = [];
+	        if (d > 0) {
+	          r.push('<em>' + d + '</em>\u5929');
+	        }
+	        if (r.length || h > 0) {
+	          r.push('<em>' + h + '</em>\u65F6');
+	        }
+	        if (r.length || m > 0) {
+	          r.push('<em>' + m + '</em>\u5206');
+	        }
+	        if (r.length || s > 0) {
+	          r.push('<em>' + s + '</em>\u79D2');
+	        }
+	        self.last_time = r.join('');
+	        update.call(self, r.join(''));
+	        setTimeout(function () {
+	          self.countdown(end, update, handle);
+	        }, 1000);
+	      }
 	    }
 	  }]);
 
-	  return Hello;
+	  return Timer;
 	}();
 
-	exports.default = {
-	  A: A,
-	  test: test,
-	  Hello: Hello
-	};
+	exports.default = Timer;
+
+/***/ }),
+/* 302 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+/***/ }),
+/* 303 */
+/***/ (function(module, exports) {
+
+	"use strict";
 
 /***/ })
 /******/ ]);
